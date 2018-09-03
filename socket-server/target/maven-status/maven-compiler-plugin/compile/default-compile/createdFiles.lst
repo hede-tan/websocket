@@ -1,0 +1,5 @@
+com/drawthink/message/ServerMessage.class
+com/drawthink/websocket/WebSocketConfig.class
+com/drawthink/websocket/controller/WebSocketController.class
+com/drawthink/WebSocketdemoApplication.class
+com/drawthink/message/ClientMessage.class

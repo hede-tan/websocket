@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.drawthink.WebSocketdemoApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 23.394 sec - in com.drawthink.WebSocketdemoApplicationTests
