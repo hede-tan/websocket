@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ServerConfig {
+	private int port;
 	private String url;
 	private String roomNum;
 	
@@ -13,8 +14,9 @@ public class ServerConfig {
 		super();
 	}
 
-	public ServerConfig(String url, String roomNum) {
+	public ServerConfig(int port, String url, String roomNum) {
 		super();
+		this.port = port;
 		this.url = url;
 		this.roomNum = roomNum;
 	}
@@ -35,6 +37,14 @@ public class ServerConfig {
 		this.roomNum = roomNum;
 	}
 	
+	public int getPort() {
+		return port;
+	}
+
+	public void setPort(int port) {
+		this.port = port;
+	}
+
 	@SuppressWarnings("finally")
 	public static ServerConfig loadProperties(){
 		Properties properties = new Properties();
@@ -46,10 +56,12 @@ public class ServerConfig {
             //通过key获取.ini文件中对应的value值，并将该value值存储到一个对象中去
             serverInfo.setUrl(properties.getProperty("url"));
             serverInfo.setRoomNum(properties.getProperty("roomNum"));
+            serverInfo.setPort(Integer.valueOf(properties.getProperty("port")));
         } catch (IOException e) {
             e.printStackTrace();
         }finally{
             return serverInfo;//将存有.ini格式文件中信息的对象返回
         }
 	} 
+	
 }
