@@ -26,7 +26,7 @@ public class SocketClient {
     }
 
     @OnMessage
-    public void onMessage(String message){
+    public void onMessage(String message) throws Exception{
     	// TODO Auto-generated method stub
 	    ActiveXComponent sap = new ActiveXComponent("Sapi.SpVoice");
 		  

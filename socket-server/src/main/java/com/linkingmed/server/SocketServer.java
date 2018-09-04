@@ -8,11 +8,12 @@ import javax.websocket.OnError;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 
 import org.springframework.stereotype.Component;
 
-@ServerEndpoint(value = "/riac")
+@ServerEndpoint(value = "/riac/{roomNum}")
 @Component
 public class SocketServer {
 	// 静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
@@ -21,16 +22,18 @@ public class SocketServer {
 	// concurrent包的线程安全Set，用来存放每个客户端对应的socket对象。
 	public static CopyOnWriteArraySet<SocketServer> webSocketSet = new CopyOnWriteArraySet<SocketServer>();
 	//public static CopyOnWriteArraySet<SocketServer> webSocketSet = new CopyOnWriteArraySet<SocketServer>();
-
 	// 与某个客户端的连接会话，需要通过它来给客户端发送数据
 	private Session session;
+	
+	private String roomNum;
 
 	/**
 	 * 连接建立成功调用的方法
 	 */
 	@OnOpen
-	public void onOpen(Session session) {
+	public void onOpen(@PathParam("roomNum")String roomNum,Session session) {
 		this.session = session;
+		this.roomNum = roomNum;
 		webSocketSet.add(this); // 加入set中
 		addOnlineCount(); // 在线数加1
 		System.err.println("有新连接加入！当前在线人数为" + getOnlineCount());
@@ -79,8 +82,11 @@ public class SocketServer {
 		this.session.getBasicRemote().sendText(message);
 	}
 	public void sendMessage(String message,String port) throws IOException {
-		this.session.getBasicRemote().sendText(message);
-		// this.session.getAsyncRemote().sendText(message);
+		for (SocketServer item : webSocketSet) {
+			if(item.getRoomNum().equals(port)){
+				item.getSession().getBasicRemote().sendText(message);
+			}
+		}
 	}
 
 	/**
@@ -107,4 +113,21 @@ public class SocketServer {
 	public static synchronized void subOnlineCount() {
 		SocketServer.onlineCount--;
 	}
+
+	public Session getSession() {
+		return session;
+	}
+
+	public void setSession(Session session) {
+		this.session = session;
+	}
+
+	public String getRoomNum() {
+		return roomNum;
+	}
+
+	public void setRoomNum(String roomNum) {
+		this.roomNum = roomNum;
+	}
+	
 }

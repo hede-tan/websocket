@@ -1,4 +1,5 @@
 com\linkingmed\config\PropertiesUtil.class
 com\linkingmed\client\SocketClient.class
 com\linkingmed\config\WebSocketConfig.class
+com\linkingmed\config\ServerConfig.class
 com\linkingmed\Application.class
