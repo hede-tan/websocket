@@ -15,14 +15,18 @@ import com.linkingmed.config.ServerConfig;
 
 @SpringBootApplication
 public class Application implements EmbeddedServletContainerCustomizer{
-
+	
+	private static int port=8080;
+	
 	public static void main(String[] args) {
+		ServerConfig config = ServerConfig.loadProperties();
+		if(config.getPort()>0){
+			port=config.getPort();
+		}
 		SpringApplication.run(Application.class, args);
-		
 		try {
 			WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 			SocketClient client = new SocketClient();
-			ServerConfig config = ServerConfig.loadProperties();
 			container.connectToServer(client, new URI("ws://" + config.getUrl()+"/"+config.getRoomNum()));
 			client.send(config.getRoomNum());
 
@@ -34,7 +38,7 @@ public class Application implements EmbeddedServletContainerCustomizer{
 	
 	@Override
     public void customize(ConfigurableEmbeddedServletContainer configurableEmbeddedServletContainer) {
-        configurableEmbeddedServletContainer.setPort(55010);
+        configurableEmbeddedServletContainer.setPort(port);
     }
 	
 }
