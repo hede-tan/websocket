@@ -1,10 +1,5 @@
 package com.linkingmed;
 
-import java.net.URI;
-
-import javax.websocket.ContainerProvider;
-import javax.websocket.WebSocketContainer;
-
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
@@ -24,15 +19,7 @@ public class Application implements EmbeddedServletContainerCustomizer{
 			port=config.getPort();
 		}
 		SpringApplication.run(Application.class, args);
-		try {
-			WebSocketContainer container = ContainerProvider.getWebSocketContainer();
-			SocketClient client = new SocketClient();
-			container.connectToServer(client, new URI("ws://" + config.getUrl()+"/"+config.getRoomNum()));
-			client.send(config.getRoomNum());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		SocketClient.connect();
 		
 	}
 	
