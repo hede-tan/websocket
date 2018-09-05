@@ -31,6 +31,8 @@ public class SocketClient {
 	private static final int reConnectTime = 10 * 1000;
 	
 	private static  boolean connectStatus = false;
+	
+	private static  ServerConfig serverConfig=ServerConfig.loadProperties();
 
 	@OnOpen
 	public void open(Session session) {
@@ -51,7 +53,7 @@ public class SocketClient {
 			// 音量 0-100
 			sap.setProperty("Volume", new Variant(100));
 			// 语音朗读速度 -10 到 +10
-			sap.setProperty("Rate", new Variant(-2));
+			sap.setProperty("Rate", new Variant(serverConfig.getSpeed()));
 			Dispatch.call(sapo, "Speak", new Variant(message));
 
 		} catch (Exception e) {
@@ -80,11 +82,11 @@ public class SocketClient {
 	}
 
 	public static void connect() {
-		ServerConfig config = ServerConfig.loadProperties();
+		//serverConfig= ServerConfig.loadProperties();
 		WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 		SocketClient client = new SocketClient();
 		try {
-			container.connectToServer(client, new URI("ws://" + config.getUrl() + "/" + config.getRoomNum()));
+			container.connectToServer(client, new URI("ws://" + serverConfig.getUrl() + "/" + serverConfig.getRoomNum()));
 		} catch (DeploymentException | IOException | URISyntaxException e) {
 			logger.info("服务器连接失败,准备重新连接");
 			e.printStackTrace();

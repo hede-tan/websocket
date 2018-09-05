@@ -6,18 +6,21 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class ServerConfig {
-	private int port;
+	//服务器url
 	private String url;
+	//客户端编号
 	private String roomNum;
+	//语速
+	private int speed;
 
 	public ServerConfig() {
 		super();
 	}
 
-	public ServerConfig(int port, String url, String roomNum) {
+	public ServerConfig(String url, String roomNum,int speed) {
 		super();
-		this.port = port;
 		this.url = url;
+		this.speed = speed;
 		this.roomNum = roomNum;
 	}
 
@@ -36,11 +39,13 @@ public class ServerConfig {
 	public void setRoomNum(String roomNum) {
 		this.roomNum = roomNum;
 	}
-	public int getPort() {
-		return port;
+
+	public int getSpeed() {
+		return speed;
 	}
- 	public void setPort(int port) {
-		this.port = port;
+
+	public void setSpeed(int speed) {
+		this.speed = speed;
 	}
 
 	@SuppressWarnings("finally")
@@ -54,7 +59,7 @@ public class ServerConfig {
 			// 通过key获取.ini文件中对应的value值，并将该value值存储到一个对象中去
 			serverInfo.setUrl(properties.getProperty("url"));
 			serverInfo.setRoomNum(properties.getProperty("roomNum"));
-			serverInfo.setPort(Integer.valueOf(properties.getProperty("port")));
+			serverInfo.setSpeed(Integer.valueOf(properties.getProperty("speed")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
